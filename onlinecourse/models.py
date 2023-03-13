@@ -127,7 +127,7 @@ class Question(models.Model):
     # Other fields and methods you would like to design
 class Choice(models.Model):
     
-    question = models.ManyToManyField(Question)
+    question = models.ForeignKey(Question,on_delete=models.CASCADE)
     text = models.TextField()
     boo = models.BooleanField()
 # <HINT> The submission model

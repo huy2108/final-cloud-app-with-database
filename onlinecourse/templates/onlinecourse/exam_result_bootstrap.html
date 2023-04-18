@@ -36,19 +36,24 @@
 </nav>
 
 <div class="container-fluid">
-    {% if grade > 80 %}
+    {% if grade > 60 %}
     <div class="alert alert-success">
        <!--HINT Display passed info -->
+        <b>Congratulations, Johns!</b> You have passed the exam and completed the course with score {grade}/100
     </div>
         {% else %}
         <div class="alert alert-danger">
             <!--HINT Display failed info -->
+            <b>Failed</b> Sorry, Yan! You have failed exam with score {grade}/100
         </div>
         <a class="btn btn-link text-danger" href="{% url 'onlinecourse:course_details' course.id %}">Re-test</a>
         {% endif %}
         <div class="card-columns-vertical mt-1">
         <h5 class="">Exam results</h5>
             <!--HINT Display exam results-->
+            {% for question in course.question_set.all %}
+            
+            {% endfor %}
         </div>
     </div>
 </body>

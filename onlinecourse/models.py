@@ -6,7 +6,7 @@ except Exception:
     print("There was an error loading django modules. Do you have django installed?")
     sys.exit()
 
-from django.conf import settings
+from django.conf import settin gs
 import uuid
 
 
@@ -77,7 +77,7 @@ class Lesson(models.Model):
 
 
 # Enrollment model
-# <HINT> Once a user enrolled a class, an enrollment entry should be created between the user and course
+# Once a user enrolled a class, an enrollment entry should be created between the user and course
 # And we could use the enrollment to track information such as exam submissions
 class Enrollment(models.Model):
     AUDIT = 'audit'
@@ -95,7 +95,7 @@ class Enrollment(models.Model):
     rating = models.FloatField(default=5.0)
 
 
-# <HINT> Create a Question Model with:
+# Create a Question Model with:
     # Used to persist question content for a course
     # Has a One-To-Many (or Many-To-Many if you want to reuse questions) relationship with course
     # Has a grade point for each question
@@ -103,34 +103,32 @@ class Enrollment(models.Model):
     # Other fields and methods you would like to design
 class Question(models.Model):
     # Foreign key to lesson
-    # question text
-    # question grade/mark
-    course = models.ForeignKey(Course,on_delete = models.CASCADE)
-    lesson = models.ForeignKey(Lesson,on_delete = models.CASCADE)
-    text = models.TextField()
-    mark = models.FloatField()
-    # <HINT> A sample model method to calculate if learner get the score of the question
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,default="")
+    # Question text
+    question_text = models.CharField(null=True,max_length=200)
+    # Question grade/mark
+    question_grade = models.IntegerField()
+    # A sample model method to calculate if learner get the score of the question
     def is_get_score(self, selected_ids):
-       all_answers = self.choice_set.filter(is_correct=True).count()
-       selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
-       if all_answers == selected_correct:
-           return True
-       else:
-           return False
+        all_answers = self.choice_set.filter(is_correct=True).count()
+        selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
+        if all_answers == selected_correct:
+            return True
+        else:
+            return False
 
-
-#  <HINT> Create a Choice Model with:
+#   Create a Choice Model with:
     # Used to persist choice content for a question
     # One-To-Many (or Many-To-Many if you want to reuse choices) relationship with Question
     # Choice content
     # Indicate if this choice of the question is a correct one or not
     # Other fields and methods you would like to design
 class Choice(models.Model):
-    
-    question = models.ForeignKey(Question,on_delete=models.CASCADE)
-    text = models.TextField()
-    boo = models.BooleanField()
-# <HINT> The submission model
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, default="")
+    choice_text = models.CharField(null=False, max_length=200)
+    is_correct = models.BooleanField(default=False)
+
+# The submission model
 # One enrollment could have multiple submission
 # One submission could have multiple choices
 # One choice could belong to multiple submissions

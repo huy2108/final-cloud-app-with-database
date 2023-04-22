@@ -6,7 +6,7 @@ except Exception:
     print("There was an error loading django modules. Do you have django installed?")
     sys.exit()
 
-from django.conf import settin gs
+from django.conf import settings
 import uuid
 
 

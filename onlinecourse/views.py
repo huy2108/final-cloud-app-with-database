@@ -144,11 +144,28 @@ def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = Submission.objects.get(id=submission_id)
     choices = submission.choices.all()
+    questions = Question.objects.all
 
     exam_score = 0
+    hold = choices[0].question.id
+    flag = 0
+    count = 0
     for choice in choices:
-        if choice.is_correct:
+        if(choice.question.id != hold):
+            hold = choice.question.id
+            flag = 0
+            count = 0
+        if(not choice.is_correct):
+            flag = 1
+        if(not choice.is_correct and count == 1):
+            exam_score -= choice.question.question_grade
+        if(flag == 1):
+            continue
+        if(choice.question.is_get_score(choices)):
             exam_score += choice.question.question_grade
+            flag = 1
+            count = 1
+
     context['course'] = course
     context['question_grade'] = exam_score
     context['choices'] = choices
